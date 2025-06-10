@@ -15,7 +15,6 @@ This project builds a production-grade real-time data warehouse capable of handl
 - Apache Airflow
 - Apache Kafka
 - PostgreSQL
-- Redis
 - Superset (for BI dashboards)
 - Apache Pinot (for real-time analytics)
 - Elasticsearch
