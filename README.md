@@ -17,7 +17,6 @@ This project builds a production-grade real-time data warehouse capable of handl
 - PostgreSQL
 - Superset (for BI dashboards)
 - Apache Pinot (for real-time analytics)
-- Elasticsearch
 - Docker & Docker Compose
 
 ## Setup Instructions
@@ -57,7 +56,7 @@ This starts up Kafka, PostgreSQL, Redis, Airflow, and other services.
 ## Monitoring & Observability
 
 - Logs can be shipped to Elasticsearch.
-- Dashboards built in Superset or integrated with Grafana.
+- Dashboards built in Superset
 
 ## CI/CD
 
