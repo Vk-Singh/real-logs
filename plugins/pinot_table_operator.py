@@ -13,27 +13,25 @@ class PinotTableSubmitOperator(BaseOperator):
     __init__ function.
 
     Args:
-        self (type): Description.
-        folder_path (type): Description.
-        pinot_url (type): Description.
+        folder_path (Path): folder path where schema files are saved.
+        pinot_url (string): URL of the pinot server.
 
     Returns:
-        type: Description.
+        None.
     """'''
         super(PinotTableSubmitOperator, self).__init__(*args, **kwargs)
         self.folder_path = folder_path
         self.pinot_url = pinot_url
 
-    def execute(self, context: Context) -> Any:
+    def execute(self) -> Any:
         '''"""
-    execute function.
+        Function to send the table to Apache Pinot
 
     Args:
-        self (type): Description.
-        context (type): Description.
+        None
 
     Returns:
-        type: Description.
+        None
     """'''
         try:
             table_files = glob.glob(self.folder_path + '/*.json')

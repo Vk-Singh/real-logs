@@ -17,17 +17,17 @@ opening_dates = []
 
 def generate_random_data(row_num):
     '''"""
-    generate_random_data function.
+    generate random data that will be input into airflow.
 
     Args:
-        row_num (type): Description.
+        row_num (int):  data for the row number
 
     Returns:
-        type: Description.
+        tuple: a tuple contatining required data fields .
     """'''
     account_id = f'A{row_num:05d}'
     account_type = random.choice(['SAVINGS', 'CHECKING'])
-    status = random.choice(['ACTIVE', 'ACTIVE'])
+    status = random.choice(['ACTIVE', 'PASSIVE'])
     customer_id = f'C{random.randint(1, 1000):05d}'
     balance = round(random.uniform(100.0, 10000.0), 2)
     now = datetime.now()
@@ -37,11 +37,11 @@ def generate_random_data(row_num):
 
 def generate_account_dim_data():
     '''"""
-    generate_account_dim_data function.
+    generate account data in dataframe format to be printed out in csv
 
 
     Returns:
-        type: Description.
+        None
     """'''
     row_num = 1
     while row_num <= num_rows:
@@ -56,6 +56,7 @@ def generate_account_dim_data():
     df = pd.DataFrame({'account_id': account_ids, 'account_type': account_types, 'status': statuses, 'customer_id': customer_ids, 'balance': balances, 'opening_date': opening_dates})
     df.to_csv(output_file, index=False)
     print(f'CSV file {output_file} with {num_rows} rows has been generated successfully!')
+
 with DAG('account_dim_generator', default_args=defaultargs, description='Generate large account dimension data in a CSV file', schedule_interval=timedelta(days=1), start_date=start_date, tags=['schema']) as dag:
     start = EmptyOperator(task_id='start_task')
     generate_account_dimension_data = PythonOperator(task_id='generate_account_dim_data', python_callable=generate_account_dim_data)

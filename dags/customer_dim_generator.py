@@ -11,13 +11,13 @@ output_file = './customer_dim_large_data.csv'
 
 def generate_random_data(row_num):
     '''"""
-    generate_random_data function.
+    generate random customer data
 
     Args:
-        row_num (type): Description.
+        row_num (int): Row number for which the customer data is created.
 
     Returns:
-        type: Description.
+        tuple: A tuple of required fields.
     """'''
     customer_id = f'C{row_num:05d}'
     first_name = f'FirstName{row_num}'
@@ -31,11 +31,11 @@ def generate_random_data(row_num):
 
 def generate_customer_dim_data():
     '''"""
-    generate_customer_dim_data function.
+    generate dataframe of customer data and save as csv.
 
 
     Returns:
-        type: Description.
+        None
     """'''
     customer_ids = []
     first_names = []
@@ -56,12 +56,14 @@ def generate_customer_dim_data():
     df = pd.DataFrame({'customer_id': customer_ids, 'first_name': first_names, 'last_name': last_names, 'email': emails, 'phone_number': phone_numbers, 'registration_date': registration_dates})
     df.to_csv(output_file, index=False)
     print(f"CSV file '{output_file}' with {num_rows} rows has been generated successfully.")
+
 customer_ids = []
 first_names = []
 last_names = []
 emails = []
 phone_numbers = []
 registration_dates = []
+
 with DAG('customer_dim_generator', default_args=default_args, description='A DAG to generate large customer dimension data', schedule_interval=timedelta(days=1), start_date=start_date, tags=['dimension']) as dag:
     start = EmptyOperator(task_id='start_task')
     generate_customer_dim_data = PythonOperator(task_id='generate_customer_dim_data', python_callable=generate_customer_dim_data)

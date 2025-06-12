@@ -34,7 +34,7 @@ x-airflow-common:
     postgres:
       condition: service_healthy
   networks:
-    - codewithyu
+    - vkd
 
 services:
   zookeeper:
@@ -53,7 +53,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - codewithyu
+      - vkd
 
   kafka_broker:
     image: docker.redpanda.com/redpandadata/redpanda:v24.1.1
@@ -76,7 +76,7 @@ services:
       - 19092:19092
       - 19644:9644
     networks:
-      - codewithyu
+      - vkd
 
   console:
     image: docker.redpanda.com/redpandadata/console:v2.5.2
@@ -106,7 +106,7 @@ services:
             - name: local-connect-cluster
               url: http://connect:8083
     networks:
-      - codewithyu
+      - vkd
 
   postgres:
     image: postgres:13
@@ -124,7 +124,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - codewithyu
+      - vkd
 
   airflow-webserver:
     <<: *airflow-common
@@ -144,7 +144,7 @@ services:
       airflow-init:
         condition: service_completed_successfully
     networks:
-      - codewithyu
+      - vkd
 
   airflow-scheduler:
     <<: *airflow-common
@@ -162,7 +162,7 @@ services:
       airflow-init:
         condition: service_completed_successfully
     networks:
-      - codewithyu
+      - vkd
 
   airflow-init:
     <<: *airflow-common
@@ -241,7 +241,7 @@ services:
     volumes:
       - ${AIRFLOW_PROJ_DIR:-.}:/sources
     networks:
-      - codewithyu
+      - vkd
 
   airflow-cli:
     <<: *airflow-common
@@ -256,7 +256,7 @@ services:
       - -c
       - airflow
     networks:
-      - codewithyu
+      - vkd
 
   pinot-controller:
     image: apachepinot/pinot:1.2.0
@@ -270,7 +270,7 @@ services:
     depends_on:
       - zookeeper
     networks:
-      - codewithyu
+      - vkd
 
   pinot-broker:
     image: apachepinot/pinot:1.2.0
@@ -284,7 +284,7 @@ services:
     depends_on:
       - pinot-controller
     networks:
-      - codewithyu
+      - vkd
 
   pinot-server:
     image: apachepinot/pinot:1.2.0
@@ -298,7 +298,7 @@ services:
     depends_on:
       - pinot-broker
     networks:
-      - codewithyu
+      - vkd
 
   superset:
     build:
@@ -313,6 +313,6 @@ services:
     ports:
       - '8088:8088'
     networks:
-      - codewithyu
+      - vkd
 networks:
-  codewithyu:
+  vkd:

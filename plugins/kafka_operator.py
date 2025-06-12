@@ -15,13 +15,10 @@ class KafkaProduceOperator(BaseOperator):
     __init__ function.
 
     Args:
-        self (type): Description.
-        kafka_broker (type): Description.
-        kafka_topic (type): Description.
-        num_records (type): Description.
+        kafka_broker (string): Broker server.
+        kafka_topic (string): name of the kafka topic.
+        num_records (int): number of records to be consumed.
 
-    Returns:
-        type: Description.
     """'''
         super(KafkaProduceOperator, self).__init__(*args, **kwargs)
         self.kafka_broker = kafka_broker
@@ -33,11 +30,10 @@ class KafkaProduceOperator(BaseOperator):
     generate_transaction_data function.
 
     Args:
-        self (type): Description.
-        row_num (type): Description.
+        row_num (int): row number for which the records will be generated.
 
     Returns:
-        type: Description.
+        transaction (dictionary): A dict containing all the transaction data.
     """'''
         customer_ids = [f'C{str(i).zfill(5)}' for i in range(1, self.num_records + 1)]
         account_ids = [f'A{str(i).zfill(5)}' for i in range(1, self.num_records + 1)]
@@ -56,16 +52,10 @@ class KafkaProduceOperator(BaseOperator):
         transaction = {'transaction_id': transaction_id, 'transaction_date': transaction_date, 'account_id': account_id, 'customer_id': customer_id, 'transaction_type': transaction_type, 'currency': currency, 'branch_id': branch_id, 'transaction_amount': transaction_amount, 'exchange_rate': exchange_rate}
         return transaction
 
-    def execute(self, context: Context) -> Any:
+    def execute(self) -> Any:
         '''"""
-    execute function.
+    Sends the generated content to the kafka topic
 
-    Args:
-        self (type): Description.
-        context (type): Description.
-
-    Returns:
-        type: Description.
     """'''
         producer = KafkaProducer(bootstrap_servers=self.kafka_broker, value_serializer=lambda v: json.dumps(v).encode('utf-8'))
         for row_num in range(1, self.num_records + 1):
